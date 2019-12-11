@@ -17,32 +17,19 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { text: "" };
-    this.onSend = this.onSend.bind(this);
-    this._isMounted = false;
-  }
-  onSend() {
-    var message = {
-      content: { // Custom content
-        message: "Hello world!!"
-      }
-    };
-    Bridgefy.sendBroadcastMessage(message);
-
   }
 
-  componentMount() {
+  componentDidMount() {
 
     Bridgefy.init("e79ca836-8a57-4dc9-b53a-578e77d93d64",
-      ()=>{
-        console.log("ERROR");
+      (error, message)=>{
+        console.log("ERROR"+error+":"+message);
       },
       (client) => {
         console.log(JSON.stringify(client));
-
-        BridgefySDK.start();
       }
     );
-
+    BridgefySDK.start();
     var message = {
       content: { // Custom content
         message: "Hello world!!"
@@ -126,15 +113,6 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View>
-        <TextInput
-          placeholder="Type here!"
-          onChangeText={(text) => this.setState({ text })}
-          value={this.state.text}
-        />
-        <Button
-          title="Send"
-          onPress={()=>this.onSend()}
-        />
       </View>
 
     );
