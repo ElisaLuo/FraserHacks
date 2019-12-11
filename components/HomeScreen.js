@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   View,
+  Button,
   DeviceEventEmitter,
 } from 'react-native';
 
@@ -19,25 +20,35 @@ export default class HomeScreen extends React.Component {
     this.onSend = this.onSend.bind(this);
     this._isMounted = false;
   }
-  componentWillMount() {
+  onSend() {
+    var message = {
+      content: { // Custom content
+        message: "Hello world!!"
+      }
+    };
+    Bridgefy.sendBroadcastMessage(message);
+
+  }
+
+  componentMount() {
 
     Bridgefy.init("e79ca836-8a57-4dc9-b53a-578e77d93d64",
-      (errorCode, message) => {
-        console.log("ERROR" + message + ":" + errorCode);
+      ()=>{
+        console.log("ERROR");
       },
       (client) => {
         console.log(JSON.stringify(client));
 
-        Bridgefy.start();
-        BridgefyClient.user = {
-          _id: client.userUuid,
-          name: "Broadcast User",
-          avatar: 'https://unsplash.it/200/300/?random',
-        }
-
-        this._isMounted = true;
+        BridgefySDK.start();
       }
     );
+
+    var message = {
+      content: { // Custom content
+        message: "Hello world!!"
+      }
+    };
+    Bridgefy.sendBroadcastMessage(message);
 
     //
     // BridgefyMessageListener
@@ -109,15 +120,6 @@ export default class HomeScreen extends React.Component {
       console.log('onDeviceLost: ' + device);
     }
     );
-
-  }
-  onSend() {
-    var message = {
-      content: { // Custom content
-        message: "Hello world!!"
-      }
-    };
-    Bridgefy.sendBroadcastMessage(message);
 
   }
 
